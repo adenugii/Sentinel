@@ -1,6 +1,6 @@
-import ProductImageGallery from "@/app/(sections-product-detail)/ProductImageGallery";
-import ProductPurchaseInfo from "@/app/(sections-product-detail)/ProductPurchaseInfo";
-import ProductTabs from "@/app/(sections-product-detail)/ProductTabs";
+import ProductImageGallery from "@/app/(main)/(sections-product-detail)/ProductImageGallery";
+import ProductPurchaseInfo from "@/app/(main)/(sections-product-detail)/ProductPurchaseInfo";
+import ProductTabs from "@/app/(main)/(sections-product-detail)/ProductTabs";
 import { featuredProducts } from "@/data/mock/products";
 import Link from "next/link";
 

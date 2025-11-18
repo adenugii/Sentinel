@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import CertificateInfo from "@/app/(sections-warranty-detail)/CertificateInfo";
-import BlockchainVerification from "@/app/(sections-warranty-detail)/BlockchainVerification";
+import CertificateInfo from "@/app/(main)/(sections-warranty-detail)/CertificateInfo";
+import BlockchainVerification from "@/app/(main)/(sections-warranty-detail)/BlockchainVerification";
 
 // --- Mock Data ---
 // Di aplikasi nyata, Anda akan fetch data berdasarkan `params.certificateId`

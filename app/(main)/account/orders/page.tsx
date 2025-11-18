@@ -1,5 +1,5 @@
 import { mockOrders } from "@/data/mock/orders";
-import OrderHistoryClient from "@/app/(sections-orders)/OrderHistoryClient";
+import OrderHistoryClient from "@/app/(main)/(sections-orders)/OrderHistoryClient";
 
 // Simulasi pengambilan data
 const getOrders = async () => {

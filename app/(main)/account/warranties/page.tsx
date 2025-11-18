@@ -1,6 +1,6 @@
 // Import from the new section folder name
-import EmptyState from "@/app/(sections-warranties)/EmptyState";
-import WarrantyCard from "@/app/(sections-warranties)/WarrantyCard";
+import EmptyState from "@/app/(main)/(sections-warranties)/EmptyState";
+import WarrantyCard from "@/app/(main)/(sections-warranties)/WarrantyCard";
 
 // Mock Data (remains the same, just for demo)
 const mockWarrantyData = [

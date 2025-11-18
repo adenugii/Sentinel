@@ -5,10 +5,10 @@ import { mockOrderDetailData } from "@/data/mock/orders"; // <-- IMPORT KEMBALI
 // import { OrderDetail } from "@/core/entities/order"; 
 
 // Import-import untuk section (sudah ada)
-import OrderDetailHeader from "@/app/(sections-order-detail)/OrderDetailHeader";
-import PurchasedItemCard from "@/app/(sections-order-detail)/PurchasedItemCard";
-import ShippingDetailsCard from "@/app/(sections-order-detail)/ShippingDetailsCard";
-import PaymentDetailsCard from "@/app/(sections-order-detail)/PaymentDetailsCard";
+import OrderDetailHeader from "@/app/(main)/(sections-order-detail)/OrderDetailHeader";
+import PurchasedItemCard from "@/app/(main)/(sections-order-detail)/PurchasedItemCard";
+import ShippingDetailsCard from "@/app/(main)/(sections-order-detail)/ShippingDetailsCard";
+import PaymentDetailsCard from "@/app/(main)/(sections-order-detail)/PaymentDetailsCard";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
