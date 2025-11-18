@@ -6,7 +6,7 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen flex">
+    <div className="h-full absolute inset-0 flex">
       {/* Kolom Kiri: Grafis (hanya tampil di layar besar) */}
       <AuthGraphic />
 
