@@ -16,10 +16,12 @@ const Navbar = () => {
               <Link href="/" className="text-gray-500 hover:text-gray-900 transition-colors">
                 Beranda
               </Link>
-              <Link href="/smartphones" className="text-gray-500 hover:text-gray-900 transition-colors">
+              
+              {/* UPDATE LINK INI */}
+              <Link href="/products" className="text-gray-500 hover:text-gray-900 transition-colors">
                 Produk
               </Link>
-              {/* Saran Tombol Baru: FAQ */}
+
               <Link href="/faq" className="text-gray-500 hover:text-gray-900 transition-colors">
                 FAQ
               </Link>

@@ -12,7 +12,7 @@ const HeroSection = () => {
           blockchain. Ucapkan selamat tinggal pada nota fisik.
         </p>
         <Link
-          href="/smartphones"
+          href="/products"
           className="inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg"
         >
           Belanja Sekarang

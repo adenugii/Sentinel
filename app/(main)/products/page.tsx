@@ -1,16 +1,17 @@
 import ProductCard from "@/components/domain/ProductCard";
-import { featuredProducts } from "@/data/mock/products"; // Kita reuse mock data
-import FilterSidebar from "../(sections-product-list)/FilterSidebar";
+import { featuredProducts } from "@/data/mock/products";
+import FilterSidebar from "@/app/(main)/(sections-product-list)/FilterSidebar"; // Pastikan import path ini benar
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 
 // Duplikasi data untuk memenuhi grid (hanya untuk mock)
 const allProducts = [
   ...featuredProducts,
-  ...featuredProducts.slice(0, 4) // Menambah 4 produk lagi
+  ...featuredProducts.slice(0, 4)
 ]; 
 
-export default function SmartphonesPage() {
+// Ganti nama komponen jadi ProductsPage
+export default function ProductsPage() {
   return (
     <div className="bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -26,11 +27,11 @@ export default function SmartphonesPage() {
                 <span className="mx-2 text-gray-400">/</span>
               </li>
               <li className="text-gray-900 font-semibold">
-                Smartphones
+                Produk {/* Ubah Teks */}
               </li>
             </ol>
           </nav>
-          <h1 className="text-3xl font-bold text-gray-900">Smartphones</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Semua Produk</h1> {/* Ubah Judul */}
         </div>
 
         {/* Konten Utama: Filter + Grid */}
@@ -45,10 +46,10 @@ export default function SmartphonesPage() {
             {/* Baris Info & Urutkan */}
             <div className="flex justify-between items-center mb-4">
               <span className="text-sm text-gray-600">
-                Menampilkan 1-12 dari 80 produk
+                Menampilkan 1-12 dari {allProducts.length} produk
               </span>
               <div className="relative">
-                <select className="appearance-none border border-gray-300 rounded-md py-2 px-4 pr-8 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                <select className="appearance-none border border-gray-300 rounded-md py-2 px-4 pr-8 focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white">
                   <option value="paling-baru">Paling Baru</option>
                   <option value="paling-populer">Paling Populer</option>
                   <option value="harga-terendah">Harga Terendah</option>
@@ -61,7 +62,7 @@ export default function SmartphonesPage() {
             {/* Grid Produk */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {allProducts.map((product, index) => (
-                // Tambahkan index agar key menjadi unik (misal: "1-0", "1-5")
+                // Gunakan index key fix yang tadi kita bahas
                 <ProductCard key={`${product.id}-${index}`} product={product} />
               ))}
             </div>
