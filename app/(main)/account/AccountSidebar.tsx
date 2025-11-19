@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ListOrdered, Shield, LogOut } from "lucide-react";
+import { ListOrdered, Shield, LogOut, User } from "lucide-react";
 
 export default function AccountSidebar() {
   const pathname = usePathname();
@@ -16,6 +16,11 @@ export default function AccountSidebar() {
   };
 
   const navLinks = [
+    {
+      href: "/account/profile", // <-- LINK BARU
+      label: "Profil Saya",
+      icon: User,
+    },
     {
       href: "/account/orders", // <-- Rute untuk halaman ini
       label: "Riwayat Pesanan", // <-- Bahasa Indonesia

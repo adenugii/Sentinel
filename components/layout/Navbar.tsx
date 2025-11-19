@@ -1,5 +1,4 @@
-import { NAV_LINKS } from "@/core/constants";
-import { Search, ShoppingCart } from "lucide-react";
+import { Search, ShoppingCart, HelpCircle } from "lucide-react"; // Tambah icon HelpCircle untuk FAQ
 import Link from "next/link";
 
 const Navbar = () => {
@@ -9,22 +8,20 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Kiri: Logo & Nav Links */}
           <div className="flex items-center space-x-8">
-            <Link href="/" className="text-2xl font-bold text-gray-900">
-              Sentinel
+            <Link href="/" className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+               {/* Logo Sentinel (Optional Icon) */}
+               Sentinel
             </Link>
             <div className="hidden md:flex space-x-6">
-              {/* Hapus link "Produk" dan "Tentang Kami" agar sesuai gambar */}
-              <Link href="/" className="text-gray-500 hover:text-gray-900">
+              <Link href="/" className="text-gray-500 hover:text-gray-900 transition-colors">
                 Beranda
               </Link>
-              <Link href="/smartphones" className="text-gray-500 hover:text-gray-900">
+              <Link href="/smartphones" className="text-gray-500 hover:text-gray-900 transition-colors">
                 Produk
               </Link>
-              <Link href="/about" className="text-gray-500 hover:text-gray-900">
-                Tentang Kami
-              </Link>
-              <Link href="/contact" className="text-gray-500 hover:text-gray-900">
-                Kontak
+              {/* Saran Tombol Baru: FAQ */}
+              <Link href="/faq" className="text-gray-500 hover:text-gray-900 transition-colors">
+                FAQ
               </Link>
             </div>
           </div>
@@ -36,31 +33,34 @@ const Navbar = () => {
               <input
                 type="text"
                 placeholder="Cari produk..."
-                className="bg-gray-100 rounded-full py-2 px-4 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="bg-gray-100 rounded-full py-2 px-4 pl-10 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow"
               />
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             </div>
             
-            <button className="text-gray-500 hover:text-gray-900 p-2 rounded-full relative">
-              <ShoppingCart />
-              <span className="absolute -top-1 -right-1 bg-blue-700 text-white text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center">
-                0
+            {/* Tombol Keranjang (Link ke /cart) */}
+            <Link href="/cart" className="text-gray-500 hover:text-gray-900 p-2 rounded-full relative transition-colors">
+              <ShoppingCart className="w-6 h-6" />
+              <span className="absolute -top-1 -right-1 bg-blue-700 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
+                3 {/* Mock jumlah item, sesuaikan dengan state cart nanti */}
               </span>
-            </button>
+            </Link>
             
-            {/* Tombol Login/Daftar Sesuai Desain Baru */}
-            <Link
-              href="/login"
-              className="text-gray-700 hover:text-blue-700 px-4 py-2 rounded-full text-sm font-medium"
-            >
-              Masuk
-            </Link>
-            <Link
-              href="/register"
-              className="bg-blue-700 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-800"
-            >
-              Daftar
-            </Link>
+            {/* Tombol Login/Daftar */}
+            <div className="flex items-center space-x-2">
+                <Link
+                href="/login"
+                className="text-gray-700 hover:text-blue-700 px-4 py-2 rounded-full text-sm font-medium transition-colors"
+                >
+                Masuk
+                </Link>
+                <Link
+                href="/register"
+                className="bg-blue-700 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-800 transition-colors shadow-sm"
+                >
+                Daftar
+                </Link>
+            </div>
           </div>
         </div>
       </div>
