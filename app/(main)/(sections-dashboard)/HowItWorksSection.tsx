@@ -22,9 +22,6 @@ export default function HowItWorksSection() {
             <p className="text-gray-600">
               Semua gawai di Sentinel 100% dijamin resmi dari mitra terverifikasi.
             </p>
-            <div className="mt-8 w-10 h-10 bg-blue-700 text-white rounded-full flex items-center justify-center text-xl font-bold">
-              1
-            </div>
           </div>
 
           {/* Langkah 2 */}
@@ -38,9 +35,6 @@ export default function HowItWorksSection() {
             <p className="text-gray-600">
               Setelah pesanan Anda selesai, kami otomatis menerbitkan Sertifikat Garansi Digital ke Garasi Gawai Anda.
             </p>
-            <div className="mt-8 w-10 h-10 bg-blue-700 text-white rounded-full flex items-center justify-center text-xl font-bold">
-              2
-            </div>
           </div>
 
           {/* Langkah 3 */}
@@ -54,11 +48,32 @@ export default function HowItWorksSection() {
             <p className="text-gray-600">
               Sertifikat Anda (bukti tanggal beli) dicatat di blockchain. Anti hilang, dan siap ditunjukkan di service center kapanpun.
             </p>
-            <div className="mt-8 w-10 h-10 bg-blue-700 text-white rounded-full flex items-center justify-center text-xl font-bold">
-              3
-            </div>
           </div>
           
+        </div>
+
+        {/* Angka dengan garis penghubung */}
+        <div className="mt-10 flex items-center justify-center max-w-2xl mx-auto">
+          {/* Angka 1 */}
+          <div className="w-12 h-12 bg-[#1E3A8A] text-white rounded-full flex items-center justify-center text-xl font-bold flex-shrink-0">
+            1
+          </div>
+          
+          {/* Garis 1 ke 2 */}
+          <div className="flex-1 h-1 bg-[#10B981] mx-4"></div>
+          
+          {/* Angka 2 */}
+          <div className="w-12 h-12 bg-[#1E3A8A] text-white rounded-full flex items-center justify-center text-xl font-bold flex-shrink-0">
+            2
+          </div>
+          
+          {/* Garis 2 ke 3 */}
+          <div className="flex-1 h-1 bg-[#10B981] mx-4"></div>
+          
+          {/* Angka 3 */}
+          <div className="w-12 h-12 bg-[#1E3A8A] text-white rounded-full flex items-center justify-center text-xl font-bold flex-shrink-0">
+            3
+          </div>
         </div>
       </div>
     </section>

@@ -7,14 +7,29 @@ export default function FilterSidebar() {
     <aside className="w-full md:w-64 lg:w-72">
       <h2 className="text-2xl font-bold mb-4">Filter</h2>
       
-      {/* Filter Brand */}
+      {/* Filter Kategori (BARU) */}
+      <div className="mb-6">
+        <h3 className="font-semibold mb-3">Kategori</h3>
+        <div className="space-y-2">
+          <Checkbox id="cat-smartphones" label="Smartphones" name="category" />
+          <Checkbox id="cat-laptops" label="Laptops" name="category" />
+          <Checkbox id="cat-tablets" label="Tablets" name="category" />
+          <Checkbox id="cat-wearables" label="Wearables" name="category" />
+          <Checkbox id="cat-audio" label="Audio" name="category" />
+        </div>
+      </div>
+
+      {/* Filter Brand (DIPERLUAS) */}
       <div className="mb-6">
         <h3 className="font-semibold mb-3">Brand</h3>
         <div className="space-y-2">
           <Checkbox id="brand-samsung" label="Samsung" name="brand" />
           <Checkbox id="brand-apple" label="Apple" name="brand" />
           <Checkbox id="brand-xiaomi" label="Xiaomi" name="brand" />
-          <Checkbox id="brand-pixel" label="Google Pixel" name="brand" />
+          <Checkbox id="brand-pixel" label="Google" name="brand" />
+          {/* Tambahan brand untuk laptop/audio */}
+          <Checkbox id="brand-dell" label="Dell" name="brand" />
+          <Checkbox id="brand-sony" label="Sony" name="brand" />
         </div>
       </div>
 
@@ -29,12 +44,13 @@ export default function FilterSidebar() {
 
       {/* Filter Penyimpanan */}
       <div className="mb-6">
-        <h3 className="font-semibold mb-3">Penyimpanan Internal</h3>
+        <h3 className="font-semibold mb-3">Penyimpanan</h3>
         <div className="space-y-2">
           <Checkbox id="storage-128" label="128GB" name="storage" />
           <Checkbox id="storage-256" label="256GB" name="storage" />
           <Checkbox id="storage-512" label="512GB" name="storage" />
           <Checkbox id="storage-1tb" label="1TB" name="storage" />
+          <Checkbox id="storage-2tb" label="2TB" name="storage" />
         </div>
       </div>
 

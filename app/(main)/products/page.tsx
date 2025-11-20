@@ -1,22 +1,17 @@
 import ProductCard from "@/components/domain/ProductCard";
-import { featuredProducts } from "@/data/mock/products";
-import FilterSidebar from "@/app/(main)/(sections-product-list)/FilterSidebar"; // Pastikan import path ini benar
+import FilterSidebar from "@/app/(main)/(sections-product-list)/FilterSidebar";
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
+import { productService } from "@/services/productService"; // <-- Import Service
 
-// Duplikasi data untuk memenuhi grid (hanya untuk mock)
-const allProducts = [
-  ...featuredProducts,
-  ...featuredProducts.slice(0, 4)
-]; 
+export default async function ProductsPage() {
+  // PANGGIL SERVICE (Menggantikan import mock langsung)
+  const allProducts = await productService.getAllProducts();
 
-// Ganti nama komponen jadi ProductsPage
-export default function ProductsPage() {
   return (
     <div className="bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
-        {/* Breadcrumbs & Judul */}
         <div className="mb-6">
           <nav className="text-sm mb-2" aria-label="Breadcrumb">
             <ol className="list-none p-0 inline-flex">
@@ -27,26 +22,20 @@ export default function ProductsPage() {
                 <span className="mx-2 text-gray-400">/</span>
               </li>
               <li className="text-gray-900 font-semibold">
-                Produk {/* Ubah Teks */}
+                Produk
               </li>
             </ol>
           </nav>
-          <h1 className="text-3xl font-bold text-gray-900">Semua Produk</h1> {/* Ubah Judul */}
+          <h1 className="text-3xl font-bold text-gray-900">Semua Produk</h1>
         </div>
 
-        {/* Konten Utama: Filter + Grid */}
         <div className="flex flex-col md:flex-row gap-8">
-          
-          {/* Kolom Kiri: Filter */}
           <FilterSidebar />
 
-          {/* Kolom Kanan: Grid Produk */}
           <main className="flex-1">
-            
-            {/* Baris Info & Urutkan */}
             <div className="flex justify-between items-center mb-4">
               <span className="text-sm text-gray-600">
-                Menampilkan 1-12 dari {allProducts.length} produk
+                Menampilkan 1-{allProducts.length} dari {allProducts.length} produk
               </span>
               <div className="relative">
                 <select className="appearance-none border border-gray-300 rounded-md py-2 px-4 pr-8 focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white">
@@ -62,12 +51,10 @@ export default function ProductsPage() {
             {/* Grid Produk */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {allProducts.map((product, index) => (
-                // Gunakan index key fix yang tadi kita bahas
                 <ProductCard key={`${product.id}-${index}`} product={product} />
               ))}
             </div>
 
-            {/* Paginasi (Placeholder) */}
             <div className="mt-12 flex justify-center">
               <nav className="flex space-x-2">
                 <span className="bg-blue-700 text-white px-4 py-2 rounded-md">1</span>

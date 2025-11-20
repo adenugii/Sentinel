@@ -1,37 +1,27 @@
 import ProductImageGallery from "@/app/(main)/(sections-product-detail)/ProductImageGallery";
 import ProductPurchaseInfo from "@/app/(main)/(sections-product-detail)/ProductPurchaseInfo";
 import ProductTabs from "@/app/(main)/(sections-product-detail)/ProductTabs";
-import { featuredProducts } from "@/data/mock/products";
 import Link from "next/link";
+import { productService } from "@/services/productService"; // <-- Import Service
 
-// --- Mock Data ---
-// Di aplikasi nyata, Anda akan fetch data berdasarkan `params.slug`
-// Di sini kita ambil saja produk pertama dari mock data kita
-const getProductBySlug = async (slug: string) => {
-  const product = featuredProducts.find(p => p.id === "1"); // Simulasikan slug/id
-  
-  if (!product) return null;
+export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  // 1. Await params (Best Practice Next.js 15+)
+  const { slug } = await params;
 
-  return {
-    ...product,
-    images: [
-      "/images/galaxy-s24-ultra.png", // Gambar utama
-      "/images/iphone-15-pro.png", // Ganti dengan gambar thumbnail
-      "/images/macbook-pro-m3.png", // Ganti dengan gambar thumbnail
-      "/images/apple-watch-ultra.png", // Ganti dengan gambar thumbnail
-    ]
-  };
-};
-// --- Akhir Mock Data ---
-
-
-export default async function ProductDetailPage({ params }: { params: { slug: string } }) {
-  
-  // Ambil data (simulasi)
-  const product = await getProductBySlug(params.slug);
+  // 2. PANGGIL SERVICE (Gantikan fungsi lokal)
+  const product = await productService.getProductById(slug);
 
   if (!product) {
-    return <div>Produk tidak ditemukan</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900">Produk tidak ditemukan</h1>
+          <Link href="/products" className="text-blue-600 hover:underline mt-4 block">
+            Kembali ke Produk
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -48,8 +38,8 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
               <span className="mx-2 text-gray-400">/</span>
             </li>
             <li className="flex items-center">
-              <Link href="/smartphones" className="text-gray-500 hover:text-blue-600">
-                Smartphones
+              <Link href="/products" className="text-gray-500 hover:text-blue-600">
+                Produk
               </Link>
               <span className="mx-2 text-gray-400">/</span>
             </li>
@@ -59,25 +49,18 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
           </ol>
         </nav>
 
-        {/* Konten Utama: 2 Kolom */}
+        {/* Konten Utama */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          {/* Kolom Kiri: Galeri Gambar */}
           <div>
-            <ProductImageGallery images={product.images} />
+            {/* Gunakan images dari service, atau fallback ke array berisi imageUrl utama */}
+            <ProductImageGallery images={product.images || [product.imageUrl]} />
           </div>
 
-          {/* Kolom Kanan: Info Pembelian */}
           <div>
-            {/* Kita tidak bisa pass 'product' ke sini karena Info
-              memiliki komponen 'use client'. Kita akan perbaiki ini
-              di langkah selanjutnya jika diperlukan, tapi untuk sekarang
-              PurchaseInfo akan menggunakan data mock-nya sendiri.
-            */}
             <ProductPurchaseInfo />
           </div>
         </div>
 
-        {/* Bagian Bawah: Tabs */}
         <div className="mt-16">
           <ProductTabs />
         </div>

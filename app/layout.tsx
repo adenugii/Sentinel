@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { AuthProvider } from "@/context/AuthContext"; // <-- Import AuthProvider
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -9,7 +10,6 @@ export const metadata: Metadata = {
   description: "Marketplace Gawai Resmi dengan jaminan garansi digital aman di blockchain.",
 };
 
-// Layout ini hanya berisi HTML dan BODY
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -17,8 +17,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id">
-      {/* Navbar dan Footer sudah tidak ada di sini */}
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        {/* Bungkus seluruh aplikasi dengan AuthProvider */}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
+      </body>
     </html>
   );
 }
