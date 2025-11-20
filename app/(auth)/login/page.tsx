@@ -2,11 +2,12 @@
 
 import Input from "@/components/ui/Input";
 import Checkbox from "@/components/ui/Checkbox";
-import Button from "@/components/ui/Button"; // Asumsi Anda punya ini
+import Button from "@/components/ui/Button"; 
 import Link from "next/link";
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext"; // <-- Import hook auth
 
-// Ikon Google SVG (karena tidak ada di lucide-react)
+// Ikon Google SVG (Komponen lokal untuk ikon Google)
 const GoogleIcon = () => (
   <svg className="w-5 h-5" viewBox="0 0 24 24">
     <path
@@ -29,10 +30,33 @@ const GoogleIcon = () => (
 );
 
 export default function LoginPage() {
+  const { login } = useAuth(); // Ambil fungsi login dari context
+  
   // State untuk form
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    // Simulasi panggil API Login (delay 1 detik)
+    // Di real app: const res = await authService.login(email, password);
+    
+    setTimeout(() => {
+      // Panggil fungsi login context untuk update global state
+      // Ini akan otomatis redirect user ke halaman utama '/' (lihat AuthContext.tsx)
+      login("mock-token-123", {
+        id: "1",
+        name: "Ahmad Ridwan", // Simulasi data user dari backend
+        email: email,
+      });
+      
+      // Tidak perlu set isLoading(false) karena halaman akan berpindah/redirect
+    }, 1000);
+  };
 
   return (
     <div className="w-full">
@@ -44,7 +68,7 @@ export default function LoginPage() {
       </p>
 
       {/* Form Login */}
-      <form className="space-y-5">
+      <form className="space-y-5" onSubmit={handleSubmit}>
         <Input
           id="email"
           label="Email"
@@ -52,6 +76,7 @@ export default function LoginPage() {
           placeholder="Enter your email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
         <Input
           id="password"
@@ -60,6 +85,7 @@ export default function LoginPage() {
           placeholder="Enter your password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
         
         <div className="flex justify-between items-center text-sm">
@@ -69,13 +95,18 @@ export default function LoginPage() {
             checked={rememberMe}
             onChange={(e) => setRememberMe(e.target.checked)}
           />
-          <Link href="/forgot-password" className="font-medium text-blue-700 hover:text-blue-800">
+          <Link href="#" className="font-medium text-blue-700 hover:text-blue-800">
             Forgot password?
           </Link>
         </div>
 
-        <Button variant="primary" type="submit" className="w-full text-lg py-3">
-          Login
+        <Button 
+          variant="primary" 
+          type="submit" 
+          className="w-full text-lg py-3"
+          disabled={isLoading}
+        >
+          {isLoading ? "Logging in..." : "Login"}
         </Button>
       </form>
 

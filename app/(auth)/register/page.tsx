@@ -1,11 +1,11 @@
 'use client';
 
 import Input from "@/components/ui/Input";
-import Button from "@/components/ui/Button"; // Asumsi Anda punya ini
+import Button from "@/components/ui/Button"; 
 import Link from "next/link";
 import { useState } from "react";
 
-// Ikon Google SVG (kita copy dari halaman login)
+// Ikon Google SVG
 const GoogleIcon = () => (
   <svg className="w-5 h-5" viewBox="0 0 24 24">
     <path
@@ -29,6 +29,8 @@ const GoogleIcon = () => (
 
 export default function RegisterPage() {
   // State untuk form
+  const [name, setName] = useState(""); // State Nama
+  const [phone, setPhone] = useState(""); // State No. Telepon
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -44,6 +46,27 @@ export default function RegisterPage() {
 
       {/* Form Register */}
       <form className="space-y-5">
+        
+        {/* Input Nama Lengkap (BARU) */}
+        <Input
+          id="name"
+          label="Full Name"
+          type="text"
+          placeholder="Enter your full name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+
+        {/* Input Nomor Telepon (BARU) */}
+        <Input
+          id="phone"
+          label="Phone Number"
+          type="tel"
+          placeholder="08xxxxxxxxxx"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+        />
+
         <Input
           id="email"
           label="Email"
@@ -52,6 +75,7 @@ export default function RegisterPage() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
+        
         <Input
           id="password"
           label="Password"
@@ -60,6 +84,7 @@ export default function RegisterPage() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        
         <Input
           id="confirmPassword"
           label="Confirm Password"

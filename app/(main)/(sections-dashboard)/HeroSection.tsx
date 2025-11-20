@@ -26,8 +26,8 @@ const HeroSection = () => {
           blockchain. Ucapkan selamat tinggal pada nota fisik.
         </p>
         <Link
-          href="/smartphones"
-          className="inline-block bg-[#10B981] hover:bg-[#0d9567] text-white font-bold py-3 px-8 rounded-full text-lg transition-colors shadow-lg"
+          href="/products"
+          className="inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg"
         >
           Belanja Sekarang
         </Link>
