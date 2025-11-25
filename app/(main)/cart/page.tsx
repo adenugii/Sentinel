@@ -1,17 +1,10 @@
-import { mockCartItems } from "@/data/mock/cart";
+// app/(main)/cart/page.tsx
 import CartClient from "../(sections-cart)/CartClient";
 
-// Simulasi pengambilan data
-const getCartItems = async () => {
-  // Di dunia nyata, ini adalah 'await fetch(...)' atau 'cookies().get(...)'
-  return mockCartItems;
-};
-
-export default async function CartPage() {
-  const items = await getCartItems();
-  
+export default function CartPage() {
+  // Fetching dipindahkan ke Client Component (CartClient)
+  // karena butuh akses Token di browser cookies.
   return (
-    // Layout (Navbar & Footer) sudah di-handle oleh app/layout.tsx
-    <CartClient initialItems={items} />
+    <CartClient />
   );
 }

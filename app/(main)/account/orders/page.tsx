@@ -1,18 +1,11 @@
-import { mockOrders } from "@/data/mock/orders";
 import OrderHistoryClient from "@/app/(main)/(sections-orders)/OrderHistoryClient";
-
-// Simulasi pengambilan data
-const getOrders = async () => {
-  // Di dunia nyata, ini adalah 'await fetch(...)'
-  return mockOrders;
-};
+import { orderService } from "@/core/services/orderService"; // <-- Import Service
 
 export default async function OrderHistoryPage() {
-  const orders = await getOrders();
+  // PANGGIL SERVICE
+  const orders = await orderService.getMyOrders();
 
   return (
-    // Layout 2 kolom (Sidebar + Konten)
-    // sudah di-handle oleh app/account/layout.tsx
     <OrderHistoryClient orders={orders} />
   );
 }

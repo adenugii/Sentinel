@@ -1,15 +1,10 @@
 import FaqAccordion from "../(sections-faq)/FaqAccordion";
-import { mockFaqData } from "@/data/mock/faq";
 import Link from "next/link";
-
-// Simulasi pengambilan data
-const getFaqData = async () => {
-  // Di dunia nyata, ini bisa jadi 'await fetch(...)'
-  return mockFaqData;
-};
+import { faqService } from "@/core/services/faqService"; // <-- Import Service
 
 export default async function FaqPage() {
-  const faqItems = await getFaqData();
+  // PANGGIL SERVICE
+  const faqItems = await faqService.getAllFaqs();
 
   return (
     <div className="bg-white">
@@ -32,14 +27,12 @@ export default async function FaqPage() {
             Pertanyaan Populer
           </h2>
           
-          {/* Komponen Accordion (Client) */}
           <FaqAccordion items={faqItems} />
 
-          {/* Tombol Hubungi Kami */}
           <div className="text-center mt-16">
             <p className="text-gray-600 mb-4">Masih ada pertanyaan lain?</p>
             <Link
-              href="/contact" // Arahkan ke halaman kontak
+              href="#"
               className="bg-blue-700 text-white font-semibold px-8 py-3 rounded-full hover:bg-blue-800 transition-colors"
             >
               Hubungi Kami

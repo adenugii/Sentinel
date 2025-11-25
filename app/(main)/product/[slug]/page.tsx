@@ -1,37 +1,27 @@
 import ProductImageGallery from "@/app/(main)/(sections-product-detail)/ProductImageGallery";
 import ProductPurchaseInfo from "@/app/(main)/(sections-product-detail)/ProductPurchaseInfo";
 import ProductTabs from "@/app/(main)/(sections-product-detail)/ProductTabs";
-import { featuredProducts } from "@/data/mock/products";
 import Link from "next/link";
+import { productService } from "@/core/services/productService"; 
 
-// --- Mock Data ---
-// Di aplikasi nyata, Anda akan fetch data berdasarkan `params.slug`
-// Di sini kita ambil saja produk pertama dari mock data kita
-const getProductBySlug = async (slug: string) => {
-  const product = featuredProducts.find(p => p.id === "1"); // Simulasikan slug/id
-  
-  if (!product) return null;
+export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
 
-  return {
-    ...product,
-    images: [
-      "/images/galaxy-s24-ultra.png", // Gambar utama
-      "/images/iphone-15-pro.png", // Ganti dengan gambar thumbnail
-      "/images/macbook-pro-m3.png", // Ganti dengan gambar thumbnail
-      "/images/apple-watch-ultra.png", // Ganti dengan gambar thumbnail
-    ]
-  };
-};
-// --- Akhir Mock Data ---
-
-
-export default async function ProductDetailPage({ params }: { params: { slug: string } }) {
-  
-  // Ambil data (simulasi)
-  const product = await getProductBySlug(params.slug);
+  // slug di URL biasanya string "1", service kita sudah handle convert atau terima string
+  const product = await productService.getProductById(slug);
 
   if (!product) {
-    return <div>Produk tidak ditemukan</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center p-8 bg-white rounded-lg shadow">
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">Produk tidak ditemukan</h1>
+          <p className="text-gray-500">Mungkin produk ini sudah dihapus atau link salah.</p>
+          <Link href="/products" className="text-blue-600 hover:underline mt-6 inline-block font-medium">
+            &larr; Kembali ke Katalog
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -40,46 +30,42 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
         
         {/* Breadcrumbs */}
         <nav className="text-sm mb-6" aria-label="Breadcrumb">
-          <ol className="list-none p-0 inline-flex">
+          <ol className="list-none p-0 inline-flex flex-wrap">
             <li className="flex items-center">
-              <Link href="/" className="text-gray-500 hover:text-blue-600">
+              <Link href="/" className="text-gray-500 hover:text-blue-600 transition-colors">
                 Beranda
               </Link>
               <span className="mx-2 text-gray-400">/</span>
             </li>
             <li className="flex items-center">
-              <Link href="/smartphones" className="text-gray-500 hover:text-blue-600">
-                Smartphones
+              <Link href="/products" className="text-gray-500 hover:text-blue-600 transition-colors">
+                Produk
               </Link>
               <span className="mx-2 text-gray-400">/</span>
             </li>
-            <li className="text-gray-900 font-semibold" aria-current="page">
+            <li className="text-gray-900 font-semibold truncate max-w-[200px] sm:max-w-none" aria-current="page">
               {product.name}
             </li>
           </ol>
         </nav>
 
-        {/* Konten Utama: 2 Kolom */}
+        {/* Konten Utama */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          {/* Kolom Kiri: Galeri Gambar */}
           <div>
-            <ProductImageGallery images={product.images} />
+            {/* UPDATE: product.image sudah array, jadi langsung pass saja */}
+            <ProductImageGallery images={product.image} />
           </div>
 
-          {/* Kolom Kanan: Info Pembelian */}
           <div>
-            {/* Kita tidak bisa pass 'product' ke sini karena Info
-              memiliki komponen 'use client'. Kita akan perbaiki ini
-              di langkah selanjutnya jika diperlukan, tapi untuk sekarang
-              PurchaseInfo akan menggunakan data mock-nya sendiri.
-            */}
-            <ProductPurchaseInfo />
+            {/* PENTING: Kirim data product ke komponen ini agar harga/tombol beli berfungsi */}
+            {/* Anda mungkin perlu update komponen ProductPurchaseInfo untuk menerima prop 'product' */}
+            <ProductPurchaseInfo product={product} />
           </div>
         </div>
 
-        {/* Bagian Bawah: Tabs */}
         <div className="mt-16">
-          <ProductTabs />
+          {/* Kirim description ke Tabs */}
+          <ProductTabs description={product.description} />
         </div>
 
       </div>

@@ -1,9 +1,17 @@
+// core/entities/cart.ts
+
 export interface CartItem {
-  id: string; // ID unik untuk item keranjang (bisa jadi ID produk + varian)
-  productId: string;
+  id: number;
+  product_id?: number;
   name: string;
-  details: string; // Misal: "256GB, Hitam"
-  imageUrl: string;
-  price: number;
+  image: string | string[]; 
+  price: string;
+  color: string | string[];
+  memory: string | string[];
   quantity: number;
+}
+
+export interface CartResponse {
+  success: boolean;
+  data: CartItem[];
 }
