@@ -1,6 +1,6 @@
 import EmptyState from "@/app/(main)/(sections-warranties)/EmptyState";
 import WarrantyCard from "@/app/(main)/(sections-warranties)/WarrantyCard";
-import { warrantyService } from "@/services/warrantyService"; // <-- Import Service
+import { warrantyService } from "@/core/services/warrantyService"; // <-- Import Service
 
 export default async function WarrantiesPage() {
   // PANGGIL SERVICE

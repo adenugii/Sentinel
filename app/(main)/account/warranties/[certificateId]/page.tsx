@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import CertificateInfo from "@/app/(main)/(sections-warranty-detail)/CertificateInfo";
 import BlockchainVerification from "@/app/(main)/(sections-warranty-detail)/BlockchainVerification";
-import { warrantyService } from "@/services/warrantyService"; // <-- Import Service
+import { warrantyService } from "@/core/services/warrantyService"; // <-- Import Service
 
 // PERUBAHAN 1: Ubah tipe params menjadi Promise
 export default async function CertificateDetailPage({ params }: { params: Promise<{ certificateId: string }> }) {

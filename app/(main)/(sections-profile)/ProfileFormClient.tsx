@@ -1,16 +1,65 @@
+// app/(main)/(sections-profile)/ProfileFormClient.tsx
 'use client';
 
 import Input from "@/components/ui/Input"; 
 import Button from "@/components/ui/Button";
 import ProfilePhotoUpload from "./ProfilePhotoUpload";
 import AddressCard from "./AddressCard";
-import { Plus, Save } from "lucide-react";
-import { useState } from "react";
+import { Plus, Save, Loader2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { userService, UserProfile } from "@/core/services/userService";
 
 export default function ProfileFormClient() {
-  // State form biodata
-  const [name, setName] = useState("Ahmad Ridwan");
-  const [birthDate, setBirthDate] = useState("1990-01-01"); // Format YYYY-MM-DD untuk input date
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  
+  // State Data User
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+
+  // State Form (Editable)
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+
+  // Load Data
+  useEffect(() => {
+    const loadProfile = async () => {
+      try {
+        const data = await userService.getProfile();
+        setProfile(data);
+        setName(data.name);
+        setPhone(data.phone_number);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadProfile();
+  }, []);
+
+  // Handle Simpan
+  const handleSave = async () => {
+    setIsSaving(true);
+    try {
+      const updatedData = await userService.updateProfile({
+        name: name,
+        phone_number: phone
+      });
+      
+      // Update UI dengan data terbaru dari server
+      setProfile(updatedData);
+      alert("Profil berhasil diperbarui!");
+    } catch (error: any) {
+      console.error(error);
+      alert(error.message);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  if (isLoading) {
+    return <div className="h-64 flex items-center justify-center"><Loader2 className="animate-spin text-blue-700"/></div>;
+  }
 
   return (
     <div className="space-y-8 relative pb-24"> 
@@ -21,7 +70,8 @@ export default function ProfileFormClient() {
           
           {/* Kolom Kiri: Foto */}
           <div className="lg:col-span-1">
-             <ProfilePhotoUpload />
+             {/* Kirim URL foto dari API ke komponen upload */}
+             <ProfilePhotoUpload currentImage={profile?.profile_picture} />
           </div>
 
           {/* Kolom Kanan: Form */}
@@ -30,8 +80,9 @@ export default function ProfileFormClient() {
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Nama</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
                 <Input 
+                  id="name"
                   label="" 
                   value={name} 
                   onChange={(e) => setName(e.target.value)} 
@@ -39,18 +90,15 @@ export default function ProfileFormClient() {
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Tanggal Lahir</label>
+              {/* API Belum menyediakan Tanggal Lahir, jadi kita disable dulu atau biarkan statis */}
+              <div className="opacity-50 pointer-events-none grayscale"> 
+                <label className="block text-sm font-medium text-gray-700 mb-1">Tanggal Lahir (Belum tersedia)</label>
                 <div className="flex items-center space-x-4">
                     <input 
                         type="date" 
-                        value={birthDate}
-                        onChange={(e) => setBirthDate(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                        disabled
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-500 cursor-not-allowed"
                     />
-                    <button className="text-sm font-semibold text-blue-700 hover:text-blue-800 whitespace-nowrap">
-                        Ubah Tanggal Lahir
-                    </button>
                 </div>
               </div>
             </div>
@@ -63,66 +111,76 @@ export default function ProfileFormClient() {
         <h3 className="text-lg font-bold text-gray-900 border-b pb-4 mb-6">Kontak Info</h3>
         
         <div className="space-y-6">
-          {/* Email */}
+          {/* Email (Read Only) */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
               <div className="flex items-center space-x-3">
-                <span className="text-gray-900 text-lg">ahmad.ridwan@gmail.com</span>
+                <span className="text-gray-900 text-lg">{profile?.email}</span>
                 <span className="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded">
                   Verified
                 </span>
               </div>
             </div>
-            <button className="text-blue-700 font-semibold hover:text-blue-800">Ubah</button>
+            {/* Tombol ubah email dihilangkan karena biasanya butuh flow khusus (OTP) */}
           </div>
 
-          {/* Divider Halus */}
           <hr className="border-gray-100" />
 
-          {/* Nomor HP */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Nomor HP</label>
-              <div className="flex items-center space-x-3">
-                <span className="text-gray-900 text-lg">0812-3456-7890</span>
-                <span className="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded">
-                  Verified
-                </span>
-              </div>
-            </div>
-            <button className="text-blue-700 font-semibold hover:text-blue-800">Ubah</button>
+          {/* Nomor HP (Editable) */}
+          <div className="flex flex-col gap-2">
+             <label className="block text-sm font-medium text-gray-700">Nomor HP</label>
+             <Input 
+                id="phone"
+                label=""
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="08xxxxxxxxxx"
+             />
           </div>
         </div>
       </div>
 
       {/* SECTION 3: ALAMAT */}
-      <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-200">
+      {/* Karena API get profile belum mengembalikan alamat, kita tampilkan placeholder static 
+          atau kita bisa sembunyikan section ini jika mau. Di sini saya biarkan static dulu. */}
+      <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-200 opacity-60">
         <div className="flex justify-between items-center mb-6 border-b pb-4">
-            <h3 className="text-lg font-bold text-gray-900">Alamat Saya</h3>
-            <button className="flex items-center text-blue-700 font-bold border border-blue-700 px-4 py-2 rounded-md hover:bg-blue-50 transition-colors text-sm">
-                <Plus className="w-4 h-4 mr-2" />
-                Tambah Alamat Baru
-            </button>
+            <h3 className="text-lg font-bold text-gray-900">Alamat Saya (Coming Soon)</h3>
         </div>
-
         <div className="space-y-4">
             <AddressCard 
                 isPrimary={true}
                 label="Rumah"
-                receiverName="Ahmad Ridwan"
-                phone="081234567890"
-                address="Jl. Sudirman No. 123, RT 05 RW 03, Kebayoran Baru, Jakarta Selatan, DKI Jakarta, 12190"
+                receiverName={name}
+                phone={phone}
+                address="Alamat belum disetting di database."
             />
         </div>
       </div>
 
       {/* STICKY ACTION BAR */}
-      <div className="fixed bottom-0 left-0 right-0 bg-gray-900 text-white border-t border-gray-800 p-4 z-40 md:pl-72">
-        <div className="max-w-7xl mx-auto px-4 flex justify-end">
-            <button className="bg-transparent hover:bg-gray-800 text-white font-semibold py-2 px-6 rounded-md flex items-center transition-colors border border-gray-600">
-                <Save className="w-4 h-4 mr-2" />
-                Simpan Perubahan
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-40 md:pl-72 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+        <div className="max-w-7xl mx-auto px-4 flex justify-end items-center gap-4">
+            <p className="text-sm text-gray-500 hidden sm:block">
+                Pastikan data yang Anda masukkan sudah benar.
+            </p>
+            <button 
+                onClick={handleSave}
+                disabled={isSaving}
+                className="bg-blue-700 hover:bg-blue-800 text-white font-semibold py-3 px-8 rounded-md flex items-center transition-all disabled:opacity-70 disabled:cursor-not-allowed shadow-lg shadow-blue-700/20"
+            >
+                {isSaving ? (
+                    <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Menyimpan...
+                    </>
+                ) : (
+                    <>
+                        <Save className="w-4 h-4 mr-2" />
+                        Simpan Perubahan
+                    </>
+                )}
             </button>
         </div>
       </div>

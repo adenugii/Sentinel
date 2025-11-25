@@ -1,5 +1,5 @@
 import OrderHistoryClient from "@/app/(main)/(sections-orders)/OrderHistoryClient";
-import { orderService } from "@/services/orderService"; // <-- Import Service
+import { orderService } from "@/core/services/orderService"; // <-- Import Service
 
 export default async function OrderHistoryPage() {
   // PANGGIL SERVICE

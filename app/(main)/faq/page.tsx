@@ -1,6 +1,6 @@
 import FaqAccordion from "../(sections-faq)/FaqAccordion";
 import Link from "next/link";
-import { faqService } from "@/services/faqService"; // <-- Import Service
+import { faqService } from "@/core/services/faqService"; // <-- Import Service
 
 export default async function FaqPage() {
   // PANGGIL SERVICE

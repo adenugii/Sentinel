@@ -6,7 +6,7 @@ import ShippingDetailsCard from "@/app/(main)/(sections-order-detail)/ShippingDe
 import PaymentDetailsCard from "@/app/(main)/(sections-order-detail)/PaymentDetailsCard";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { orderService } from "@/services/orderService"; // <-- Import Service
+import { orderService } from "@/core/services/orderService"; // <-- Import Service
 
 export default async function OrderDetailPage({ params }: { params: Promise<{ orderId: string }> }) {
   const { orderId: currentOrderId } = await params;

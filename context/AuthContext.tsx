@@ -2,16 +2,13 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
-
-// Tipe data user sederhana
-interface User {
-  id: string;
-  name: string;
-  email: string;
-}
+import Cookies from 'js-cookie'; // <--- WAJIB: Kita ganti localStorage dengan ini
+// Sebaiknya import tipe User dari file yang sudah kita buat biar konsisten
+import { User } from '@/core/types/auth'; 
 
 interface AuthContextType {
   user: User | null;
+  token: string | null; // Tambahkan token di state biar bisa diakses jika butuh
   isLoading: boolean;
   login: (token: string, userData: User) => void;
   logout: () => void;
@@ -21,42 +18,65 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
   // Cek status login saat aplikasi pertama kali dimuat
   useEffect(() => {
-    const checkAuth = async () => {
-      // Simulasi: Cek apakah ada token di localStorage/Cookies
-      const token = localStorage.getItem('sentinel_token');
-      const storedUser = localStorage.getItem('sentinel_user');
+    const initAuth = () => {
+      // 1. Ambil dari COOKIES (Bukan LocalStorage)
+      // Nama cookie harus sama persis dengan yang di Middleware ('token' dan 'user')
+      const storedToken = Cookies.get('token');
+      const storedUser = Cookies.get('user');
       
-      if (token && storedUser) {
-        setUser(JSON.parse(storedUser));
+      if (storedToken && storedUser) {
+        setToken(storedToken);
+        try {
+          setUser(JSON.parse(storedUser));
+        } catch (error) {
+          console.error("Error parsing user cookie:", error);
+          // Jika json rusak, hapus sekalian biar bersih
+          Cookies.remove('token');
+          Cookies.remove('user');
+        }
       }
       setIsLoading(false);
     };
 
-    checkAuth();
+    initAuth();
   }, []);
 
-  const login = (token: string, userData: User) => {
-    // Simpan ke storage (Nanti diganti cookie yang lebih aman)
-    localStorage.setItem('sentinel_token', token);
-    localStorage.setItem('sentinel_user', JSON.stringify(userData));
+  const login = (newToken: string, userData: User) => {
+    // 1. Update State React
+    setToken(newToken);
     setUser(userData);
-    router.push('/'); // Redirect ke home setelah login
+
+    // 2. Update COOKIES (Agar Middleware tahu kita login)
+    // Penting: Nama 'token' harus konsisten
+    Cookies.set('token', newToken, { expires: 1 }); // Expire 1 hari
+    Cookies.set('user', JSON.stringify(userData), { expires: 1 });
+    
+    router.push('/'); 
   };
 
   const logout = () => {
-    localStorage.removeItem('sentinel_token');
-    localStorage.removeItem('sentinel_user');
+    // 1. Hapus State React
+    setToken(null);
     setUser(null);
+
+    // 2. Hapus COOKIES (Agar Middleware tahu kita logout)
+    // INI YANG AKAN MEMPERBAIKI BUG ANDA
+    Cookies.remove('token');
+    Cookies.remove('user');
+
+    // 3. Redirect ke login
     router.push('/login');
+    router.refresh(); // Opsional: Refresh agar middleware berjalan ulang bersih
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, logout }}>
+    <AuthContext.Provider value={{ user, token, isLoading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,11 +1,10 @@
+// app/(main)/cart/page.tsx
 import CartClient from "../(sections-cart)/CartClient";
-import { cartService } from "@/services/cartService"; // <-- Import Service
 
-export default async function CartPage() {
-  // PANGGIL SERVICE
-  const items = await cartService.getCartItems();
-  
+export default function CartPage() {
+  // Fetching dipindahkan ke Client Component (CartClient)
+  // karena butuh akses Token di browser cookies.
   return (
-    <CartClient initialItems={items} />
+    <CartClient />
   );
 }

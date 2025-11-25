@@ -2,65 +2,66 @@
 
 import { useState } from 'react';
 
-export default function ProductTabs() {
+interface ProductTabsProps {
+  description?: string;
+}
+
+export default function ProductTabs({ description }: ProductTabsProps) {
   const [activeTab, setActiveTab] = useState('deskripsi');
 
   const tabs = [
-    { id: 'deskripsi', label: 'Deskripsi' },
-    { id: 'spesifikasi', label: 'Spesifikasi' },
+    { id: 'deskripsi', label: 'Deskripsi Produk' },
+    { id: 'spesifikasi', label: 'Spesifikasi Teknis' },
   ];
-
-  // Konten mock
-  const content = {
-    deskripsi: (
-      <>
-        <p className="mb-4">
-          Samsung Galaxy S25 Ultra menghadirkan inovasi terdepan dalam teknologi smartphone. Dengan desain premium yang elegan dan performa yang tak tertandingi, perangkat ini dirancang untuk memenuhi kebutuhan pengguna yang menginginkan yang terbaik.
-        </p>
-        <p>
-          Dilengkapi dengan layar Dynamic AMOLED 2X berukuran 6.8 inci yang memberikan pengalaman visual yang memukau. Kamera utama 200MP dengan teknologi AI terbaru memungkinkan Anda mengabadikan momen dengan detail yang luar biasa, bahkan dalam kondisi cahaya rendah.
-        </p>
-      </>
-    ),
-    spesifikasi: (
-      <ul className="list-disc pl-5 space-y-2">
-        <li>Layar: 6.8" Dynamic AMOLED 2X, 144Hz</li>
-        <li>Prosesor: Snapdragon 8 Gen 4 (Contoh)</li>
-        <li>Kamera Utama: 200MP Wide, 50MP Periscope, 12MP Ultrawide</li>
-        <li>Baterai: 5000mAh dengan 45W fast charging</li>
-        <li>OS: Android 15, One UI 7</li>
-      </ul>
-    ),
-  };
 
   return (
     <div className="w-full">
       {/* Tab Headers */}
-      <div className="border-b border-gray-200 mb-6">
-        <nav className="flex space-x-6">
+      <div className="border-b border-gray-200 mb-8">
+        <nav className="flex space-x-8">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`
-                pb-3 text-base font-medium
+                pb-4 text-base font-medium transition-all relative
                 ${
                   activeTab === tab.id
-                    ? 'text-blue-700 border-b-2 border-blue-700'
-                    : 'text-gray-500 hover:text-gray-700'
+                    ? 'text-blue-700 font-bold'
+                    : 'text-gray-500 hover:text-gray-800'
                 }
               `}
             >
               {tab.label}
+              {/* Garis bawah animasi */}
+              {activeTab === tab.id && (
+                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-700 rounded-t-md" />
+              )}
             </button>
           ))}
         </nav>
       </div>
 
       {/* Tab Content */}
-      <div className="prose max-w-none text-gray-700">
-        {activeTab === 'deskripsi' && content.deskripsi}
-        {activeTab === 'spesifikasi' && content.spesifikasi}
+      <div className="prose prose-blue max-w-none text-gray-600 leading-relaxed">
+        {activeTab === 'deskripsi' && (
+          <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+            {description ? (
+              <p className="whitespace-pre-line">{description}</p>
+            ) : (
+              <p className="italic text-gray-400">Belum ada deskripsi untuk produk ini.</p>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'spesifikasi' && (
+          <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+            <div className="bg-yellow-50 border border-yellow-100 p-4 rounded-lg text-yellow-800 text-sm">
+              <p className="font-semibold">Info Spesifikasi</p>
+              Saat ini data spesifikasi lengkap sedang diperbarui dari server. Silakan mengacu pada deskripsi produk.
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

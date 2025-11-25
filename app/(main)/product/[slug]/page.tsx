@@ -2,22 +2,22 @@ import ProductImageGallery from "@/app/(main)/(sections-product-detail)/ProductI
 import ProductPurchaseInfo from "@/app/(main)/(sections-product-detail)/ProductPurchaseInfo";
 import ProductTabs from "@/app/(main)/(sections-product-detail)/ProductTabs";
 import Link from "next/link";
-import { productService } from "@/services/productService"; // <-- Import Service
+import { productService } from "@/core/services/productService"; 
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-  // 1. Await params (Best Practice Next.js 15+)
   const { slug } = await params;
 
-  // 2. PANGGIL SERVICE (Gantikan fungsi lokal)
+  // slug di URL biasanya string "1", service kita sudah handle convert atau terima string
   const product = await productService.getProductById(slug);
 
   if (!product) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900">Produk tidak ditemukan</h1>
-          <Link href="/products" className="text-blue-600 hover:underline mt-4 block">
-            Kembali ke Produk
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center p-8 bg-white rounded-lg shadow">
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">Produk tidak ditemukan</h1>
+          <p className="text-gray-500">Mungkin produk ini sudah dihapus atau link salah.</p>
+          <Link href="/products" className="text-blue-600 hover:underline mt-6 inline-block font-medium">
+            &larr; Kembali ke Katalog
           </Link>
         </div>
       </div>
@@ -30,20 +30,20 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         
         {/* Breadcrumbs */}
         <nav className="text-sm mb-6" aria-label="Breadcrumb">
-          <ol className="list-none p-0 inline-flex">
+          <ol className="list-none p-0 inline-flex flex-wrap">
             <li className="flex items-center">
-              <Link href="/" className="text-gray-500 hover:text-blue-600">
+              <Link href="/" className="text-gray-500 hover:text-blue-600 transition-colors">
                 Beranda
               </Link>
               <span className="mx-2 text-gray-400">/</span>
             </li>
             <li className="flex items-center">
-              <Link href="/products" className="text-gray-500 hover:text-blue-600">
+              <Link href="/products" className="text-gray-500 hover:text-blue-600 transition-colors">
                 Produk
               </Link>
               <span className="mx-2 text-gray-400">/</span>
             </li>
-            <li className="text-gray-900 font-semibold" aria-current="page">
+            <li className="text-gray-900 font-semibold truncate max-w-[200px] sm:max-w-none" aria-current="page">
               {product.name}
             </li>
           </ol>
@@ -52,17 +52,20 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         {/* Konten Utama */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           <div>
-            {/* Gunakan images dari service, atau fallback ke array berisi imageUrl utama */}
-            <ProductImageGallery images={product.images || [product.imageUrl]} />
+            {/* UPDATE: product.image sudah array, jadi langsung pass saja */}
+            <ProductImageGallery images={product.image} />
           </div>
 
           <div>
-            <ProductPurchaseInfo />
+            {/* PENTING: Kirim data product ke komponen ini agar harga/tombol beli berfungsi */}
+            {/* Anda mungkin perlu update komponen ProductPurchaseInfo untuk menerima prop 'product' */}
+            <ProductPurchaseInfo product={product} />
           </div>
         </div>
 
         <div className="mt-16">
-          <ProductTabs />
+          {/* Kirim description ke Tabs */}
+          <ProductTabs description={product.description} />
         </div>
 
       </div>
