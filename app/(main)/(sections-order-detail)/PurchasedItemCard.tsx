@@ -1,64 +1,58 @@
-import { OrderItem } from "@/core/entities/order";
-import { CheckCircle } from "lucide-react"; // Ganti jika icon tidak ada, misal 'CheckCircle'
+import { TransactionItem } from "@/core/services/orderService";
+import { CheckCircle } from "lucide-react";
 import Image from "next/image";
 
-// Helper untuk format Rupiah
 const formatCurrency = (value: number) => {
-  return new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(value);
+  return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(value);
 };
 
 interface PurchasedItemCardProps {
-  item: OrderItem;
+  item: TransactionItem;
 }
 
 export default function PurchasedItemCard({ item }: PurchasedItemCardProps) {
+  // Ambil gambar pertama dari array
+  const imageSrc = (item.product_image && item.product_image.length > 0) 
+    ? item.product_image[0] 
+    : "https://placehold.co/100x100";
+
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-      <h2 className="text-xl font-semibold text-gray-900 mb-4">Barang yang Dibeli</h2>
-      
       <div className="flex flex-col md:flex-row md:items-center">
-        {/* Gambar & Info Produk */}
+        {/* Gambar & Info */}
         <div className="flex items-center space-x-4 flex-1 mb-4 md:mb-0">
-          <Image
-            src={item.imageUrl}
-            alt={item.name}
-            width={64}
-            height={64}
-            className="rounded-md bg-gray-100 object-contain"
-          />
+          <div className="relative w-16 h-16 flex-shrink-0">
+            <Image
+              src={imageSrc}
+              alt={item.product_name}
+              fill
+              className="rounded-md bg-gray-50 object-contain border border-gray-100"
+            />
+          </div>
           <div>
-            <h3 className="font-semibold text-gray-900">{item.name}</h3>
-            {item.isEligible && (
-              <span className="flex items-center text-xs text-blue-600 font-medium">
-                <CheckCircle className="w-4 h-4 mr-1" /> {/* Ganti ikon jika perlu */}
-                Memenuhi Syarat Garansi Digital Sentinel
-              </span>
-            )}
+            <h3 className="font-semibold text-gray-900">{item.product_name}</h3>
+            <p className="text-xs text-gray-500">{item.product_sku}</p>
+            {/* Hardcode logic garansi sentinel (biasanya semua produk di sini eligible) */}
+            <span className="flex items-center text-xs text-green-600 font-medium mt-1">
+               <CheckCircle className="w-3 h-3 mr-1" />
+               Dilindungi Garansi Sentinel
+            </span>
           </div>
         </div>
 
-        {/* Detail (Model, Qty, Harga) - Buat responsif */}
-        <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-          <div>
-            <p className="text-gray-500 mb-1">Model</p>
-            <p className="font-medium text-gray-900">{item.model}</p>
-          </div>
-          <div>
-            <p className="text-gray-500 mb-1">Kuantitas</p>
-            <p className="font-medium text-gray-900">{item.quantity}</p>
-          </div>
+        {/* Detail Harga */}
+        <div className="flex-1 grid grid-cols-2 md:grid-cols-3 gap-4 text-sm text-right md:text-left">
           <div>
             <p className="text-gray-500 mb-1">Harga Unit</p>
-            <p className="font-medium text-gray-900">{formatCurrency(item.unitPrice)}</p>
+            <p className="font-medium text-gray-900">{formatCurrency(item.unit_price)}</p>
           </div>
           <div>
+            <p className="text-gray-500 mb-1">Jumlah</p>
+            <p className="font-medium text-gray-900">x{item.quantity}</p>
+          </div>
+          <div className="text-right">
             <p className="text-gray-500 mb-1">Subtotal</p>
-            <p className="font-medium text-gray-900">{formatCurrency(item.subtotal)}</p>
+            <p className="font-bold text-gray-900">{formatCurrency(item.subtotal)}</p>
           </div>
         </div>
       </div>

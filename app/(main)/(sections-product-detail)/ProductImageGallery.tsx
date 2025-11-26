@@ -1,58 +1,53 @@
 'use client';
 
-import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useState } from "react";
+import Image from "next/image";
 
 interface ProductImageGalleryProps {
-  images: string[]; // Daftar URL gambar
+  images: string[];
 }
 
 export default function ProductImageGallery({ images }: ProductImageGalleryProps) {
-  // Safety check: Jika images kosong/undefined, gunakan array kosong atau placeholder
-  const safeImages = images && images.length > 0 ? images : ['/placeholder.png'];
-  
-  const [mainImage, setMainImage] = useState(safeImages[0]);
-
-  // Update mainImage jika props images berubah (penting saat navigasi antar produk)
-  useEffect(() => {
-    setMainImage(safeImages[0]);
-  }, [images]);
+  // Fallback safe array
+  const galleryImages = Array.isArray(images) && images.length > 0 
+    ? images 
+    : ["https://placehold.co/600x600?text=No+Image"];
+    
+  const [activeImage, setActiveImage] = useState(galleryImages[0]);
 
   return (
-    <div className="w-full">
-      {/* Gambar Utama */}
-      <div className="bg-gray-50 border border-gray-100 rounded-xl overflow-hidden mb-4 relative group">
-        <div className="relative w-full aspect-square">
-          <Image
-            src={mainImage}
-            alt="Foto Produk Utama"
-            fill
-            className="object-contain p-8 transition-transform duration-300 group-hover:scale-105"
-            priority
-            sizes="(max-width: 768px) 100vw, 50vw"
-          />
-        </div>
+    <div className="flex flex-col gap-6 sticky top-6">
+      {/* MAIN IMAGE */}
+      <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden bg-gray-50 border border-gray-100 flex items-center justify-center group">
+        <Image
+          src={activeImage}
+          alt="Product View"
+          fill
+          className="object-contain p-4 transition-transform duration-500 ease-out group-hover:scale-105"
+          priority
+        />
       </div>
-      
-      {/* Thumbnail */}
-      {safeImages.length > 1 && (
-        <div className="grid grid-cols-4 gap-3">
-          {safeImages.map((img, idx) => (
+
+      {/* THUMBNAILS */}
+      {galleryImages.length > 1 && (
+        <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+          {galleryImages.map((img, idx) => (
             <button
               key={idx}
-              onClick={() => setMainImage(img)}
+              onClick={() => setActiveImage(img)}
               className={`
-                bg-gray-50 rounded-lg overflow-hidden aspect-square
-                relative ring-2 transition-all duration-200
-                ${mainImage === img ? 'ring-blue-600 ring-offset-1' : 'ring-transparent hover:ring-gray-300'}
+                relative w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all duration-200
+                ${activeImage === img 
+                  ? "border-blue-600 ring-2 ring-blue-50 opacity-100 scale-105" 
+                  : "border-transparent bg-gray-50 opacity-60 hover:opacity-100 hover:border-gray-200"
+                }
               `}
             >
-              <Image
-                src={img}
-                alt={`Thumbnail ${idx + 1}`}
-                fill
-                className="object-contain p-2"
-                sizes="100px"
+              <Image 
+                src={img} 
+                alt={`Thumb ${idx}`} 
+                fill 
+                className="object-cover p-1" 
               />
             </button>
           ))}

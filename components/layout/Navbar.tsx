@@ -1,12 +1,12 @@
-'use client'; // PENTING: Harus client component agar bisa pakai hooks
+'use client'; 
 
 import { Search, ShoppingCart, User, LogOut, HelpCircle } from "lucide-react";
 import Link from "next/link";
-import { useAuth } from "@/context/AuthContext"; // <-- Import hook auth
+import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
 
 const Navbar = () => {
-  const { user, logout } = useAuth(); // Ambil data user & fungsi logout
+  const { user, logout } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
@@ -47,7 +47,7 @@ const Navbar = () => {
             <Link href="/cart" className="text-gray-500 hover:text-gray-900 p-2 rounded-full relative transition-colors">
               <ShoppingCart className="w-6 h-6" />
               <span className="absolute -top-1 -right-1 bg-blue-700 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
-                3 {/* Mock jumlah item */}
+                3
               </span>
             </Link>
             
@@ -59,10 +59,11 @@ const Navbar = () => {
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   className="flex items-center space-x-2 text-sm font-medium text-gray-700 hover:text-blue-700 focus:outline-none"
                 >
-                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 font-bold border border-blue-200">
-                    {/* Inisial Nama User (misal: "Ahmad Ridwan" -> "A") */}
-                    {user.name.charAt(0).toUpperCase()}
+                  {/* AVATAR PLACEHOLDER (DISAMAKAN DENGAN SIDEBAR) */}
+                  <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center border border-gray-200 overflow-hidden">
+                    <User className="w-4 h-4 text-gray-400" />
                   </div>
+                  
                   {/* Nama user ditampilkan (hidden di mobile) */}
                   <span className="hidden md:block max-w-[100px] truncate">{user.name}</span>
                 </button>
@@ -105,7 +106,7 @@ const Navbar = () => {
                 )}
               </div>
             ) : (
-              // TAMPILAN BELUM LOGIN: Tombol Masuk/Daftar
+              // TAMPILAN BELUM LOGIN
               <div className="flex items-center space-x-2">
                 <Link
                   href="/login"

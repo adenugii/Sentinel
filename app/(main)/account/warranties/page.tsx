@@ -1,10 +1,38 @@
+'use client';
+
+import { useEffect, useState } from "react";
 import EmptyState from "@/app/(main)/(sections-warranties)/EmptyState";
 import WarrantyCard from "@/app/(main)/(sections-warranties)/WarrantyCard";
-import { warrantyService } from "@/core/services/warrantyService"; // <-- Import Service
+import { warrantyService, WarrantyItem } from "@/core/services/warrantyService";
+import { Loader2 } from "lucide-react";
 
-export default async function WarrantiesPage() {
-  // PANGGIL SERVICE
-  const warranties = await warrantyService.getMyWarranties();
+export default function WarrantiesPage() {
+  const [warranties, setWarranties] = useState<WarrantyItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await warrantyService.getMyWarranties();
+        setWarranties(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <Loader2 className="w-8 h-8 animate-spin text-blue-700" />
+      </div>
+    );
+  }
+
   const hasWarranties = warranties && warranties.length > 0;
 
   return (

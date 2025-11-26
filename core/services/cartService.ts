@@ -3,10 +3,10 @@ import apiClient from '@/lib/apiClient';
 import { CartItem, CartResponse } from '../entities/cart';
 
 export const cartService = {
-  // Mengambil list keranjang
   getCartItems: async (): Promise<CartItem[]> => {
     try {
       const response = await apiClient.get<CartResponse>('/cart/');
+      // Sesuaikan dengan struktur response backend Anda
       return response.data.data || [];
     } catch (error) {
       console.error("Gagal mengambil keranjang:", error);
@@ -14,10 +14,15 @@ export const cartService = {
     }
   },
 
-  // [BARU] Add to Cart (Untuk tombol di Product Card / Detail)
-  addToCart: async (id: number | string) => {
+  // PERBAIKAN: Tambahkan parameter 'variant' di sini
+  addToCart: async (productId: number | string, variant?: { color: string; memory: string }) => {
     try {
-      const payload = { productId: Number(id) }; // Pastikan Number & key 'productId'
+      const payload = { 
+        productId: Number(productId),
+        color: variant?.color,   // Kirim warna yang dipilih
+        memory: variant?.memory  // Kirim memori yang dipilih
+      };
+      
       const response = await apiClient.post('/cart/add', payload);
       return response.data;
     } catch (error: any) {
@@ -25,21 +30,16 @@ export const cartService = {
     }
   },
 
-  // Increase (Hanya dipakai di halaman Cart untuk +1)
   increaseItem: async (id: number | string) => {
-    const payload = { productId: Number(id) };
-    const response = await apiClient.post('/cart/increase', payload);
+    const response = await apiClient.post('/cart/increase', { productId: Number(id) });
     return response.data;
   },
 
-  // Decrease (Hanya dipakai di halaman Cart untuk -1)
   decreaseItem: async (id: number | string) => {
-    const payload = { productId: Number(id) };
-    const response = await apiClient.post('/cart/decrease', payload);
+    const response = await apiClient.post('/cart/decrease', { productId: Number(id) });
     return response.data;
   },
 
-  // Remove
   removeItem: async (id: number | string) => {
     const response = await apiClient.delete(`/cart/${id}`);
     return response.data;

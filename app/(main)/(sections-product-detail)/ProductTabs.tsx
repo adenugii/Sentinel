@@ -1,65 +1,72 @@
 'use client';
 
-import { useState } from 'react';
+import { useState } from "react";
 
 interface ProductTabsProps {
-  description?: string;
+  description: string;
 }
 
 export default function ProductTabs({ description }: ProductTabsProps) {
-  const [activeTab, setActiveTab] = useState('deskripsi');
-
-  const tabs = [
-    { id: 'deskripsi', label: 'Deskripsi Produk' },
-    { id: 'spesifikasi', label: 'Spesifikasi Teknis' },
-  ];
+  const [activeTab, setActiveTab] = useState<"deskripsi" | "spesifikasi">("deskripsi");
 
   return (
-    <div className="w-full">
-      {/* Tab Headers */}
-      <div className="border-b border-gray-200 mb-8">
-        <nav className="flex space-x-8">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`
-                pb-4 text-base font-medium transition-all relative
-                ${
-                  activeTab === tab.id
-                    ? 'text-blue-700 font-bold'
-                    : 'text-gray-500 hover:text-gray-800'
-                }
-              `}
-            >
-              {tab.label}
-              {/* Garis bawah animasi */}
-              {activeTab === tab.id && (
-                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-700 rounded-t-md" />
-              )}
-            </button>
-          ))}
-        </nav>
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+      
+      {/* Tab Header */}
+      <div className="flex border-b border-gray-200">
+        <button
+          onClick={() => setActiveTab("deskripsi")}
+          className={`px-8 py-4 text-sm font-bold transition-colors border-b-2 ${
+            activeTab === "deskripsi"
+              ? "border-blue-700 text-blue-700 bg-blue-50/50"
+              : "border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+          }`}
+        >
+          Deskripsi Produk
+        </button>
+        <button
+          onClick={() => setActiveTab("spesifikasi")}
+          className={`px-8 py-4 text-sm font-bold transition-colors border-b-2 ${
+            activeTab === "spesifikasi"
+              ? "border-blue-700 text-blue-700 bg-blue-50/50"
+              : "border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+          }`}
+        >
+          Spesifikasi Teknis
+        </button>
       </div>
 
       {/* Tab Content */}
-      <div className="prose prose-blue max-w-none text-gray-600 leading-relaxed">
-        {activeTab === 'deskripsi' && (
-          <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-            {description ? (
-              <p className="whitespace-pre-line">{description}</p>
-            ) : (
-              <p className="italic text-gray-400">Belum ada deskripsi untuk produk ini.</p>
-            )}
+      <div className="p-8">
+        {activeTab === "deskripsi" && (
+          <div className="prose prose-blue max-w-none text-gray-600 leading-relaxed">
+            <p className="whitespace-pre-line">{description}</p>
+            
+            <div className="mt-6 p-4 bg-yellow-50 rounded-lg border border-yellow-100 text-sm text-yellow-800">
+              <strong>Info Penting:</strong> Pastikan Anda merekam video unboxing saat menerima paket untuk keperluan klaim garansi fisik jika terjadi kerusakan pengiriman.
+            </div>
           </div>
         )}
 
-        {activeTab === 'spesifikasi' && (
-          <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-            <div className="bg-yellow-50 border border-yellow-100 p-4 rounded-lg text-yellow-800 text-sm">
-              <p className="font-semibold">Info Spesifikasi</p>
-              Saat ini data spesifikasi lengkap sedang diperbarui dari server. Silakan mengacu pada deskripsi produk.
-            </div>
+        {activeTab === "spesifikasi" && (
+          <div>
+            <table className="w-full text-sm text-left">
+              <tbody className="divide-y divide-gray-100">
+                {/* Mock Data Spesifikasi (karena API belum kirim detail spek) */}
+                {[
+                  { label: "Kondisi", value: "Baru" },
+                  { label: "Kategori", value: "Gadget & Elektronik" },
+                  { label: "Berat", value: "500 gram" },
+                  { label: "Garansi", value: "Resmi 1 Tahun (Sentinel)" },
+                  { label: "Kelengkapan", value: "Unit, Charger, Buku Panduan" },
+                ].map((item, idx) => (
+                  <tr key={idx} className={idx % 2 === 0 ? "bg-gray-50/50" : "bg-white"}>
+                    <td className="py-3 px-4 font-medium text-gray-500 w-1/3">{item.label}</td>
+                    <td className="py-3 px-4 text-gray-900">{item.value}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
       </div>
