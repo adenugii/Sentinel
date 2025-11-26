@@ -6,13 +6,8 @@ const HeroSection = () => {
   return (
     <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
       
-      {/* BACKGROUND IMAGE (FIXED)
-        - fixed: Membuat gambar 'menempel' di viewport (layar) dan tidak ikut bergerak saat scroll.
-        - inset-0: Memenuhi seluruh layar.
-        - -z-10: Memastikan gambar berada di lapisan paling belakang.
-      */}
+      {/* BACKGROUND IMAGE (FIXED) */}
       <div className="fixed inset-0 w-full h-full -z-10">
-        {/* Layer Warna Dasar (mencegah flash putih sebelum gambar load) */}
         <div className="absolute inset-0 bg-[#0E182D]" />
         
         <Image
@@ -24,16 +19,18 @@ const HeroSection = () => {
           priority
         />
         
-        {/* Gradient Overlay untuk keterbacaan teks */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#0E182D]/50 via-transparent to-[#0E182D]"></div>
       </div>
 
-      {/* CONTENT 
-         - relative z-10: Agar teks berada di atas background dan tetap ikut scroll (normal flow).
-      */}
+      {/* CONTENT */}
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-6 tracking-tight leading-tight drop-shadow-2xl">
-          Gawai Resmi. <br className="hidden md:block" />
+          {/* UPDATE: Putih ke Biru Cerah */}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-400">
+            Gawai Resmi.
+          </span> 
+          <br className="hidden md:block" />
+          {/* EXISTING: Hijau ke Biru (Tidak diubah) */}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500">
             Garansi Aman Selamanya.
           </span>
