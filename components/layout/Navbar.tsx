@@ -16,7 +16,7 @@ const Navbar = () => {
           {/* Bagian Kiri: Logo & Link Utama */}
           <div className="flex items-center space-x-8">
             <Link href="/" className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-               Sentinel
+               SENTINEL
             </Link>
             <div className="hidden md:flex space-x-6">
               <Link href="/" className="text-gray-500 hover:text-gray-900 transition-colors">
