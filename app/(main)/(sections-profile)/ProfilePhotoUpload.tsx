@@ -1,47 +1,31 @@
-// app/(main)/(sections-profile)/ProfilePhotoUpload.tsx
 'use client';
 
 import Image from "next/image";
-import Button from "@/components/ui/Button"; 
-import { useState, useEffect } from "react";
+import { User } from "lucide-react";
 
 interface ProfilePhotoUploadProps {
   currentImage: string | null | undefined;
 }
 
 export default function ProfilePhotoUpload({ currentImage }: ProfilePhotoUploadProps) {
-  // Gunakan foto dari API atau placeholder
-  const [image, setImage] = useState("/images/avatar-placeholder.png");
-
-  useEffect(() => {
-    if (currentImage) {
-      setImage(currentImage);
-    }
-  }, [currentImage]);
-
   return (
-    <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 h-fit">
-      <div className="flex flex-col items-center">
-        <div className="relative w-32 h-32 mb-6">
-          <Image
-            src={image}
-            alt="Foto Profil"
-            fill
-            className="rounded-full border-4 border-gray-100 object-cover"
-            // Handle error jika link foto mati
-            onError={() => setImage("https://placehold.co/200x200?text=Avatar")}
-          />
+    <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full bg-gray-100 border-4 border-white overflow-hidden shadow-sm flex items-center justify-center group">
+      {currentImage ? (
+        <Image
+          src={currentImage}
+          alt="Foto Profil"
+          fill
+          className="object-cover"
+          onError={(e) => {
+             e.currentTarget.style.display = 'none';
+          }}
+        />
+      ) : (
+        // Placeholder Default
+        <div className="flex flex-col items-center justify-center text-gray-400 bg-gray-50 w-full h-full">
+          <User className="w-16 h-16 md:w-20 md:h-20 text-gray-300" />
         </div>
-        
-        {/* Disable tombol upload karena API belum support edit foto */}
-        <Button variant="secondary" className="w-full mb-4 border-gray-300 opacity-50 cursor-not-allowed">
-          Pilih Foto
-        </Button>
-
-        <p className="text-xs text-gray-500 text-center leading-relaxed">
-          Saat ini foto profil belum dapat diubah.
-        </p>
-      </div>
+      )}
     </div>
   );
 }

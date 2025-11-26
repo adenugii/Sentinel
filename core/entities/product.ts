@@ -1,16 +1,20 @@
 // core/entities/product.ts
 
 export interface Product {
-  id: number;
-  // UPDATE: Sekarang Array of string
-  image: string[]; 
+  id: number | string;
   name: string;
-  // UPDATE: Sekarang Array of string
-  memory: string[];
-  // UPDATE: Sekarang Array of string
-  color: string[];
-  price: string;
-  description?: string;
+  price: string | number;
+  image: string[]; // Pastikan ini array string
+  description: string;
+  
+  // Tambahkan properti ini:
+  sku?: string; // Opsional (?) karena mungkin data lama tidak punya SKU
+  color?: string[];
+  memory?: string[];
+  
+  // Properti lain yang mungkin ada dari API
+  category?: string;
+  stock?: number;
 }
 
 export interface ProductDetailResponse {

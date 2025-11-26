@@ -1,25 +1,47 @@
-// HAPUS import/data mock lokal
-import { OrderDetail } from "@/core/entities/order";
+'use client';
+
+import { useEffect, useState } from "react";
 import OrderDetailHeader from "@/app/(main)/(sections-order-detail)/OrderDetailHeader";
 import PurchasedItemCard from "@/app/(main)/(sections-order-detail)/PurchasedItemCard";
 import ShippingDetailsCard from "@/app/(main)/(sections-order-detail)/ShippingDetailsCard";
 import PaymentDetailsCard from "@/app/(main)/(sections-order-detail)/PaymentDetailsCard";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
-import { orderService } from "@/core/services/orderService"; // <-- Import Service
+import { orderService, OrderDetail } from "@/core/services/orderService";
+import { useParams } from "next/navigation";
 
-export default async function OrderDetailPage({ params }: { params: Promise<{ orderId: string }> }) {
-  const { orderId: currentOrderId } = await params;
+export default function OrderDetailPage() {
+  const params = useParams();
+  const orderId = params.orderId as string;
 
-  // PANGGIL SERVICE
-  const order = await orderService.getOrderDetail(currentOrderId);
+  const [order, setOrder] = useState<OrderDetail | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchDetail = async () => {
+      if(orderId) {
+        try {
+          const data = await orderService.getOrderDetail(orderId);
+          setOrder(data);
+        } catch (error) {
+          console.error(error);
+        } finally {
+          setIsLoading(false);
+        }
+      }
+    };
+    fetchDetail();
+  }, [orderId]);
+
+  if (isLoading) {
+    return <div className="h-screen flex items-center justify-center"><Loader2 className="animate-spin text-blue-700"/></div>;
+  }
 
   if (!order) {
     return (
-      <div>
+      <div className="p-8 text-center">
         <h1 className="text-xl font-bold">Pesanan tidak ditemukan.</h1>
-        <p>Tidak ada data untuk ID: {currentOrderId}</p>
-        <Link href="/account/orders" className="text-blue-600 hover:underline mt-2 block">
+        <Link href="/account/orders" className="text-blue-600 hover:underline mt-4 block">
           Kembali ke Riwayat Pesanan
         </Link>
       </div>
@@ -27,7 +49,7 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ or
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-12">
       <Link
         href="/account/orders"
         className="inline-flex items-center text-sm font-semibold text-blue-700 hover:text-blue-800"
@@ -36,29 +58,36 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ or
         Kembali ke Riwayat Pesanan
       </Link>
 
-      <h1 className="text-3xl font-bold text-gray-900">Detail Pesanan</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold text-gray-900">Detail Pesanan</h1>
+      </div>
 
       <OrderDetailHeader
-        orderId={order.orderId}
-        orderDate={order.date}
-        status={order.status}
-        totalPayment={order.totalPayment}
+        orderId={order.order_id.toString()}
+        orderDate={order.order_date}
+        status={order.order_status}
+        paymentStatus={order.payment_status}
+        totalPayment={order.total_payment}
       />
 
-      {order.purchasedItems.map((item) => (
-        <PurchasedItemCard key={item.id} item={item} />
-      ))}
+      {/* List Barang */}
+      <div className="space-y-4">
+        {order.items.map((item, index) => (
+          <PurchasedItemCard key={index} item={item} />
+        ))}
+      </div>
 
       <ShippingDetailsCard
-        recipientName={order.shippingDetails.recipientName}
-        shippingAddress={order.shippingDetails.shippingAddress}
-        estimatedDelivery={order.shippingDetails.estimatedDelivery}
+        recipientName={order.recipient_name}
+        shippingAddress={order.shipping_address}
+        estimatedDelivery={order.estimated_delivery}
       />
 
       <PaymentDetailsCard
-        paymentMethod={order.paymentDetails.paymentMethod}
-        paymentStatus={order.paymentDetails.paymentStatus}
-        transactionRefId={order.paymentDetails.transactionRefId}
+        paymentMethod="Midtrans (Virtual Account / QRIS)"
+        paymentStatus={order.payment_status}
+        transactionRefId={order.payment_ref}
+        redirectUrl={order.midtrans_redirect_url} // Kirim link bayar
       />
     </div>
   );

@@ -23,15 +23,18 @@ interface OrderSummaryProps {
 
 export default function OrderSummary({ items, onPay, isLoading }: OrderSummaryProps) {
   
-  // Hitung Subtotal (Pastikan price di-parse jadi float)
+  // Hitung Subtotal
   const subtotal = items.reduce((acc, item) => {
     return acc + (parseFloat(item.price) * item.quantity);
   }, 0);
 
-  // Perhitungan sederhana
-  const shipping = 0; 
-  const tax = subtotal * 0.11; // PPN 11%
-  const total = subtotal + shipping + tax;
+  const shipping = 0; // Gratis
+  
+  // UPDATE: Hapus Pajak
+  // const tax = subtotal * 0.11; <--- Dihapus
+  
+  // Total sekarang hanya Subtotal + Shipping
+  const total = subtotal + shipping;
 
   return (
     <aside className="lg:col-span-1">
@@ -45,7 +48,6 @@ export default function OrderSummary({ items, onPay, isLoading }: OrderSummaryPr
               <div className="flex-1">
                 <p className="font-semibold text-gray-900 line-clamp-1">{item.name}</p>
                 <p className="text-gray-500 text-xs mt-0.5">
-                  {/* Tampilkan varian jika berupa array atau string */}
                   {Array.isArray(item.memory) ? item.memory[0] : item.memory} • {item.quantity}x
                 </p>
               </div>
@@ -66,11 +68,9 @@ export default function OrderSummary({ items, onPay, isLoading }: OrderSummaryPr
             <span>Biaya Pengiriman</span>
             <span className="text-green-600 font-medium">Gratis</span>
           </div>
-          <div className="flex justify-between text-gray-700">
-            <span>Pajak (11%)</span>
-            <span>{formatCurrency(tax)}</span>
-          </div>
           
+          {/* Baris Pajak Dihapus */}
+
           <div className="border-t border-gray-300 pt-3 mt-2">
             <div className="flex justify-between font-bold text-lg text-gray-900">
               <span>Total</span>
