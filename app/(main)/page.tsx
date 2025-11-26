@@ -3,19 +3,31 @@ import TrustBarSection from "./(sections-dashboard)/TrustBarSection";
 import HowItWorksSection from "./(sections-dashboard)/HowItWorksSection";
 import FeaturedProductsSection from "./(sections-dashboard)/FeaturedProductsSection";
 import WhyChooseSection from "./(sections-dashboard)/WhyChooseSection";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
+import ScrollReveal from "@/components/ui/ScrollReveal"; // <-- Import Komponen Baru
 
 export default function HomePage() {
   return (
-    <div className="bg-gray-50">
-      {/* Navbar dan Footer sekarang dihandle oleh layout.tsx */}
+    <div className="">
       <main>
+        {/* Hero tidak perlu di-animasi scroll karena dia muncul pertama kali load */}
         <HeroSection />
-        <TrustBarSection />
-        <HowItWorksSection />
-        <FeaturedProductsSection />
-        <WhyChooseSection />
+
+        {/* Bungkus section lainnya dengan ScrollReveal */}
+        <ScrollReveal>
+          <TrustBarSection />
+        </ScrollReveal>
+
+        <ScrollReveal>
+          <HowItWorksSection />
+        </ScrollReveal>
+
+        <ScrollReveal>
+          <FeaturedProductsSection />
+        </ScrollReveal>
+
+        <ScrollReveal>
+          <WhyChooseSection />
+        </ScrollReveal>
       </main>
     </div>
   );
