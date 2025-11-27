@@ -43,12 +43,13 @@ const Navbar = () => {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             </div>
             
-            {/* Tombol Keranjang */}
-            <Link href="/cart" className="text-gray-500 hover:text-gray-900 p-2 rounded-full relative transition-colors">
+            {/* Tombol Keranjang (Tanpa Bubble) */}
+            <Link 
+              href="/cart" 
+              className="text-gray-500 hover:text-gray-900 p-2 rounded-full transition-colors hover:bg-gray-100"
+              aria-label="Keranjang Belanja"
+            >
               <ShoppingCart className="w-6 h-6" />
-              <span className="absolute -top-1 -right-1 bg-blue-700 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
-                3
-              </span>
             </Link>
             
             {/* LOGIKA AUTHENTICATION */}
@@ -59,7 +60,7 @@ const Navbar = () => {
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   className="flex items-center space-x-2 text-sm font-medium text-gray-700 hover:text-blue-700 focus:outline-none"
                 >
-                  {/* AVATAR PLACEHOLDER (DISAMAKAN DENGAN SIDEBAR) */}
+                  {/* AVATAR PLACEHOLDER (Abu-abu, sama dengan sidebar) */}
                   <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center border border-gray-200 overflow-hidden">
                     <User className="w-4 h-4 text-gray-400" />
                   </div>
@@ -70,7 +71,7 @@ const Navbar = () => {
 
                 {/* Dropdown Menu */}
                 {isDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg py-1 border border-gray-100 z-50">
+                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg py-1 border border-gray-100 z-50 animate-in fade-in zoom-in-95 duration-100 origin-top-right">
                     {/* Info User Kecil di Dropdown */}
                     <div className="px-4 py-2 border-b border-gray-100">
                         <p className="text-xs text-gray-500">Login sebagai</p>
