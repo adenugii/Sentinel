@@ -1,11 +1,12 @@
 import { Facebook, Twitter, Instagram, Youtube, Hexagon } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image"; // <-- 1. Import Image
 
 const Footer = () => {
   return (
     <footer className="relative bg-[#0B1120] text-gray-400 overflow-hidden border-t border-white/10">
       
-      {/* BACKGROUND ORNAMENTS (Menyambung tema Why Choose Us) */}
+      {/* BACKGROUND ORNAMENTS */}
       <div className="absolute top-[-50%] left-[-10%] w-96 h-96 bg-blue-600/10 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-[-50%] right-[-10%] w-96 h-96 bg-purple-600/10 rounded-full blur-[120px] pointer-events-none"></div>
 
@@ -15,10 +16,17 @@ const Footer = () => {
           {/* Kolom 1: Brand */}
           <div className="space-y-4">
             <Link href="/" className="text-2xl font-bold text-white flex items-center gap-2">
-               {/* Logo Icon Kecil */}
-               <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white">
-                 <span className="font-bold text-lg">S</span>
+               
+               {/* 2. GANTI BAGIAN LOGO DISINI */}
+               <div className="relative w-8 h-8 rounded-lg overflow-hidden flex-shrink-0">
+                 <Image 
+                   src="/icon.png" // Pastikan file ada di folder public/icon.png
+                   alt="Sentinel Logo"
+                   fill
+                   className="object-cover"
+                 />
                </div>
+               
                SENTINEL
             </Link>
             <p className="text-sm leading-relaxed opacity-80">
