@@ -1,6 +1,6 @@
-import { Facebook, Twitter, Instagram, Youtube, Hexagon } from "lucide-react";
+import { Facebook, Twitter, Instagram, Youtube, Box } from "lucide-react"; // 1. Ganti Hexagon dengan Box
 import Link from "next/link";
-import Image from "next/image"; // <-- 1. Import Image
+import Image from "next/image";
 
 const Footer = () => {
   return (
@@ -16,17 +16,15 @@ const Footer = () => {
           {/* Kolom 1: Brand */}
           <div className="space-y-4">
             <Link href="/" className="text-2xl font-bold text-white flex items-center gap-2">
-               
-               {/* 2. GANTI BAGIAN LOGO DISINI */}
+               {/* Logo Image */}
                <div className="relative w-8 h-8 rounded-lg overflow-hidden flex-shrink-0">
                  <Image 
-                   src="/icon.png" // Pastikan file ada di folder public/icon.png
+                   src="/icon.png" 
                    alt="Sentinel Logo"
                    fill
                    className="object-cover"
                  />
                </div>
-               
                SENTINEL
             </Link>
             <p className="text-sm leading-relaxed opacity-80">
@@ -94,13 +92,15 @@ const Footer = () => {
             <Link href="/terms" className="hover:text-white transition-colors">Syarat Penggunaan</Link>
           </div>
           
+          {/* Badge Etherscan */}
           <div className="flex items-center px-4 py-2 rounded-full bg-white/5 border border-white/10">
             <span className="relative flex h-2 w-2 mr-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
             </span>
             <span className="text-xs font-medium text-gray-300 flex items-center gap-1.5">
-               Secured by <span className="text-white font-bold">Polygon PoS</span> <Hexagon className="w-3 h-3 text-purple-500" />
+               Verified on <span className="text-white font-bold">Etherscan</span> 
+               <Box className="w-3 h-3 text-blue-400" />
             </span>
           </div>
         </div>
