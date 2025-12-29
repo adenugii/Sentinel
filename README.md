@@ -4,7 +4,7 @@
 
 **Sentinel** is a revolutionary marketplace platform that combines e-commerce with blockchain technology to provide secure, tamper-proof warranty management through smart contracts on Ethereum Sepolia testnet.
 
-![Sentinel Banner](public/images/hero-bg.png)
+![Sentinel Banner](https://github.com/adenugii/Sentinel/blob/main/sentinel-banner.png)
 
 </div>
 
