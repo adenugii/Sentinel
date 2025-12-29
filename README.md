@@ -268,48 +268,6 @@ npx tsc --noEmit
 npm run build
 ```
 
-## 📖 Documentation
-
-- **📘 [API Documentation](https://github.com/muktiabdii/sentinel-api/)** - Backend API reference
-- **🔗 [Smart Contract Docs](https://github.com/muktiabdii/sentinel-api/)** - Blockchain integration details
-- **🎨 [Component Library](./components/)** - Reusable UI components
-- **🏗️ [Architecture Guide](./docs/architecture.md)** - System design documentation
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
-
-### Development Workflow
-
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing-feature`)
-5. **Open** a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🌟 Acknowledgments
-
-- **Ethereum Foundation** for blockchain infrastructure
-- **Vercel** for excellent deployment platform
-- **Tailwind Labs** for the amazing CSS framework
-- **Open Source Community** for the incredible tools and libraries
-
-## 📞 Support
-
-- **🐛 Bug Reports** - [GitHub Issues](https://github.com/muktiabdii/sentinel/issues)
-- **💡 Feature Requests** - [GitHub Discussions](https://github.com/muktiabdii/sentinel/discussions)
-- **📧 Contact** - [muktiabdii@example.com](mailto:muktiabdii@example.com)
-
----
-
 <div align="center">
-
-**Built with ❤️ by the Sentinel Team**
-
-[Website](https://sentinel.example.com) • [Documentation](https://docs.sentinel.example.com) • [API](https://api.sentinel.example.com)
 
 </div>
