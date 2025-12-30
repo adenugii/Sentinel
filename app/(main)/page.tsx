@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import HeroSection from "./(sections-dashboard)/HeroSection";
 import TrustBarSection from "./(sections-dashboard)/TrustBarSection";
 import HowItWorksSection from "./(sections-dashboard)/HowItWorksSection";
